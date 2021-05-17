@@ -560,7 +560,7 @@ const shouldHideSelectedOptions = <
   return hideSelectedOptions;
 };
 
-let instanceId = 1;
+let instanceId = 1;alert()
 
 export default class Select<
   Option extends OptionBase = OptionBase,
