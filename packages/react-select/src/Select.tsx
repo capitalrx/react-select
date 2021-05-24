@@ -618,8 +618,8 @@ export default class Select<
   constructor(props: Props<Option, IsMulti, Group>) {
     super(props);
     this.instancePrefix
-      = "react-select-" + (this.props.instanceId || ++instanceId);
-    this.instanceTestIdPrefix = "react-select-" + (this.props.instanceTestId);
+      = 'react-select-' + (this.props.instanceId || ++instanceId);
+    this.instanceTestIdPrefix = 'react-select-' + this.props.instanceTestId;
     this.state.selectValue = cleanValue(props.value);
   }
   static getDerivedStateFromProps(
@@ -1021,7 +1021,7 @@ export default class Select<
     return `${this.instancePrefix}-${element}`;
   };
 
-  getElementTestId = (element: 'group' | 'input' | 'listbox' | 'option') => {
+  getElementTestId = (element: 'group' | 'input' | 'listbox' | 'option' | 'multi') => {
     return `${this.instanceTestIdPrefix}-${element}`;
   };
 
@@ -1492,7 +1492,6 @@ export default class Select<
       isDisabled,
       isSearchable,
       inputId,
-      instanceTestId,
       inputValue,
       tabIndex,
       form,
@@ -1502,7 +1501,7 @@ export default class Select<
     const { commonProps } = this;
 
     const id = inputId || this.getElementId('input');
-    const testId = instanceTestId || this.getElementTestId('input');
+    const testId = this.props.instanceTestId && this.getElementTestId('input');
 
     // aria attributes makes the JSX "noisy", separated for clarity
     const ariaAttributes = {
@@ -1510,8 +1509,6 @@ export default class Select<
       'aria-label': this.props['aria-label'],
       'aria-labelledby': this.props['aria-labelledby'],
     };
-
-    console.log("testid", testId, instanceTestId, inputId);
 
     if (!isSearchable) {
       // use a dummy input to maintain focus/blur functionality
@@ -1759,7 +1756,7 @@ export default class Select<
       const onHover = isDisabled ? undefined : () => this.onOptionHover(data);
       const onSelect = isDisabled ? undefined : () => this.selectOption(data);
       const optionId = `${this.getElementId('option')}-${id}`;
-      const optionTestId = `${this.getElementTestId('option')}-${value}`;
+      const optionTestId = this.props.instanceTestId && `${this.getElementTestId('option')}-${value}`;
 
       const innerProps = {
         id: optionId,
@@ -1897,6 +1894,7 @@ export default class Select<
   renderFormField() {
     const { delimiter, isDisabled, isMulti, name } = this.props;
     const { selectValue } = this.state;
+    const testId = this.props.instanceTestId;
 
     if (!name || isDisabled) return;
 
@@ -1915,6 +1913,7 @@ export default class Select<
                 name={name}
                 type="hidden"
                 value={this.getOptionValue(opt)}
+                data-test-id={testId && `${this.getElementTestId('multi')}-${this.getOptionValue(opt)}`}
               />
             ))
           ) : (
@@ -1925,7 +1924,7 @@ export default class Select<
       }
     } else {
       const value = selectValue[0] ? this.getOptionValue(selectValue[0]) : '';
-      return <input name={name} type="hidden" value={value} />;
+      return <input name={name} type="hidden" value={value} data-test-id={testId && `${this.getElementTestId('input')}-value`} />;
     }
   }
 
