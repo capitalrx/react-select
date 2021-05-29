@@ -1500,6 +1500,8 @@ export default class Select<
     const { inputIsHidden } = this.state;
     const { commonProps } = this;
 
+    alert();
+
     const id = inputId || this.getElementId('input');
     const testId = this.props.instanceTestId && this.getElementTestId('input');
 
