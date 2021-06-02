@@ -61,7 +61,7 @@ import {
   PropsValue,
   SetValueAction,
 } from './types';
-
+alert();
 export type FormatOptionLabelContext = 'menu' | 'value';
 export interface FormatOptionLabelMeta<Option extends OptionBase> {
   context: FormatOptionLabelContext;
@@ -560,7 +560,7 @@ const shouldHideSelectedOptions = <
   return hideSelectedOptions;
 };
 
-let instanceId = 1;alert()
+let instanceId = 1;alert();
 
 export default class Select<
   Option extends OptionBase = OptionBase,
